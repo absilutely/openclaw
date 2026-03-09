@@ -204,6 +204,12 @@ ENV NODE_ENV=production
 # This reduces the attack surface by preventing container escape via root privileges
 USER node
 
+# Create config allowing Host-header origin fallback for non-loopback Control UI.
+# Required when --bind lan is used (Railway, Docker bridge networking, etc.).
+RUN mkdir -p /home/node/.openclaw && \
+    echo '{ "gateway": { "controlUi": { "dangerouslyAllowHostHeaderOriginFallback": true } } }' \
+    > /home/node/.openclaw/openclaw.json
+
 # Start gateway server with default config.
 # Binds to loopback (127.0.0.1) by default for security.
 #
