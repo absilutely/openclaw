@@ -224,4 +224,4 @@ RUN mkdir -p /home/node/.openclaw && \
 # For external access from host/ingress, override bind to "lan" and set auth.
 HEALTHCHECK --interval=3m --timeout=10s --start-period=15s --retries=3 \
   CMD node -e "fetch('http://127.0.0.1:'+(process.env.OPENCLAW_GATEWAY_PORT||18789)+'/healthz').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
-CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"]
+CMD ["sh", "-c", "OPENCLAW_GATEWAY_PORT=${PORT:-18789} exec node openclaw.mjs gateway --allow-unconfigured --bind lan"]
